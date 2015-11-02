@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void selectItem(View view){
+        boolean checked = ((CheckBox) view).isChecked();
+
+
     }
 
     @Override

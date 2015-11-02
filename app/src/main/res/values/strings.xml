@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Don\'t Starve</string>
     <string name="action_settings">Settings</string>
+    <string name="title_message"> Select Ingredients</string>
+    <string name="eggs">Eggs</string>
+    <string name="cheese">Cheese</string>
+    <string name="salt">Salt</string>
+    <string name="pepper">Pepper</string>
 </resources>

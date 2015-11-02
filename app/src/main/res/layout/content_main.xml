@@ -9,6 +9,60 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main" tools:context=".MainActivity">
 
-    <TextView android:text="Hello World!" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <TextView
+        android:text= "@string/title_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textView" />
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/i_eggs"
+        android:text="@string/eggs"
+        android:onClick="selectItem"
+        android:layout_below="@+id/i_salt"
+        android:layout_alignLeft="@+id/i_cheese"
+        android:layout_alignStart="@+id/i_cheese" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/i_cheese"
+        android:text="@string/cheese"
+        android:onClick="selectItem"
+        android:layout_below="@+id/i_eggs"
+        android:layout_alignLeft="@+id/i_pepper"
+        android:layout_alignStart="@+id/i_pepper" />
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/i_salt"
+        android:text="@string/salt"
+        android:onClick="selectItem"
+        android:layout_marginTop="38dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/i_cheese"
+        android:layout_alignStart="@+id/i_cheese" />
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/i_pepper"
+        android:text="@string/pepper"
+        android:onClick="selectItem"
+        android:layout_below="@+id/i_cheese"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find Recipe"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="104dp" />
+
+
+
 </RelativeLayout>
