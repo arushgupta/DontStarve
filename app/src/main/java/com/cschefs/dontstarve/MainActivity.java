@@ -1,5 +1,6 @@
 package com.cschefs.dontstarve;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,5 +57,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    /** Called when the user clicks the Send button */
+    public void searchPage(View view) {
+        // Do something in response to button
+        Intent intent = new Intent(this, SearchableActivity.class);
+        startActivity(intent);
+        setContentView(R.layout.activity_searchable);
     }
 }
