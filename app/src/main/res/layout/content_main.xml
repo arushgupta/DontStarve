@@ -9,59 +9,40 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main" tools:context=".MainActivity">
 
-    <TextView
-        android:text= "@string/title_message"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/search_bar"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/textView" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/i_eggs"
-        android:text="@string/eggs"
-        android:onClick="selectItem"
-        android:layout_below="@+id/i_salt"
-        android:layout_alignLeft="@+id/i_cheese"
-        android:layout_alignStart="@+id/i_cheese" />
+        android:inputType="text"
+        android:hint="@string/search_ingredients" />
 
-    <CheckBox
+    <Button
+        android:id="@+id/search_add"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/search_add_button"
+        android:layout_toRightOf="@id/search_bar"
+        />
+
+    <ListView
+        android:id="@+id/list_ingredients"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/i_cheese"
-        android:text="@string/cheese"
-        android:onClick="selectItem"
-        android:layout_below="@+id/i_eggs"
-        android:layout_alignLeft="@+id/i_pepper"
-        android:layout_alignStart="@+id/i_pepper" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/i_salt"
-        android:text="@string/salt"
-        android:onClick="selectItem"
-        android:layout_marginTop="38dp"
-        android:layout_below="@+id/textView"
-        android:layout_alignLeft="@+id/i_cheese"
-        android:layout_alignStart="@+id/i_cheese" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/i_pepper"
-        android:text="@string/pepper"
-        android:onClick="selectItem"
-        android:layout_below="@+id/i_cheese"
-        android:layout_centerHorizontal="true" />
+        android:choiceMode="none"
+        android:smoothScrollbar="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/button"
+        android:layout_below="@+id/search_bar" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Find Recipe"
+        android:layout_marginBottom="45dp"
+        android:id="@+id/button"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="104dp" />
+        android:layout_centerHorizontal="true" />
 
 
 
