@@ -6,4 +6,7 @@
     <string name="cheese">Cheese</string>
     <string name="salt">Salt</string>
     <string name="pepper">Pepper</string>
+    <string name="title_activity_searchable">SearchableActivity</string>
+    <string name="search_hint">Search for Ingredients</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>
