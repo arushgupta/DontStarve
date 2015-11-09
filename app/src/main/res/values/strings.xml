@@ -3,7 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_message">Select Ingredients</string>
     <string name="no_ingredients">There are currently no ingredients selected.</string>
-    <string name="search_ingredients">Search here...</string>
+    <string name="search_ingredients">Search Ingredients...</string>
     <string name="search_add_button">add</string>
     <string name="eggs">Eggs</string>
     <string name="cheese">Cheese</string>

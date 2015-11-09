@@ -14,10 +14,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
+import android.app.ListActivity;
 
+import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
+import com.wdullaer.swipeactionadapter.SwipeDirections;
+
+import java.util.Collections;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ListActivity implements SwipeActionAdapter.SwipeActionListener {
 
     /** Items entered by the user is stored in this ArrayList variable */
     ArrayList<String> list_ing = new ArrayList<String>();
@@ -37,8 +43,25 @@ public class MainActivity extends AppCompatActivity {
         Button add = (Button) findViewById(R.id.search_add);
 
         ListView listView_ing = (ListView)findViewById(R.id.list_ingredients);
+        Collections.reverse(list_ing); //place newest ingredients on top
 
         adapter_ing = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list_ing);
+
+
+        /** Swipe right to delete */
+        // Wrap your content in a SwipeActionAdapter
+        SwipeActionAdapter mAdapter = new SwipeActionAdapter(adapter_ing);
+
+        // Pass a reference of your ListView to the SwipeActionAdapter
+        mAdapter.setListView(getListView());
+
+        // Set the SwipeActionAdapter as the Adapter for your ListView
+        setListAdapter(mAdapter);
+
+        // Set backgrounds for the swipe directions
+        mAdapter.addBackground(SwipeDirections.DIRECTION_NORMAL_RIGHT, R.layout.row_bg_right);
+
+
 
         /** Later, change this listener to react with the search page button. For now button name is add*/
         OnClickListener listener = new OnClickListener() {
@@ -102,4 +125,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
