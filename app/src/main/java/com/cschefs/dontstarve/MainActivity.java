@@ -1,6 +1,8 @@
 package com.cschefs.dontstarve;
 
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.SearchView;
 
 public class MainActivity extends AppCompatActivity {
 
