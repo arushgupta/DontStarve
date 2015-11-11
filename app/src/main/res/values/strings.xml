@@ -1,11 +1,114 @@
 <resources>
     <string name="app_name">What\'s in my Fridge</string>
     <string name="action_settings">Settings</string>
-    <string name="title_message"> Select Ingredients</string>
-    <string name="eggs">Eggs</string>
-    <string name="cheese">Cheese</string>
-    <string name="salt">Salt</string>
-    <string name="pepper">Pepper</string>
+    <string name="find_button_text">Find Recipe</string>
+    <string name="search_button_text">Search Ingredients</string>
+    <string name="input_search_text">Search for an ingredient here...</string>
+    <string name="back_button_text">Back</string>
     <string name="title_activity_search">Search</string>
     <string name="title_activity_searchable">Searchable</string>
+
+
+    <string-array name="string_ingredients">
+        <item>salmon</item>
+        <item>pea beans</item>
+        <item>honey</item>
+        <item>hazelnuts</item>
+        <item>cayenne pepper</item>
+        <item>monkfish</item>
+        <item>pinto beans</item>
+        <item>croutons</item>
+        <item>sour cream</item>
+        <item>portabella mushrooms</item>
+        <item>bass</item>
+        <item>broth</item>
+        <item>chestnuts</item>
+        <item>black olives</item>
+        <item>bean sauce</item>
+        <item>turtle</item>
+        <item>chicory</item>
+        <item>tomato puree</item>
+        <item>pesto</item>
+        <item>rhubarb</item>
+        <item>onions</item>
+        <item>curry paste</item>
+        <item>lemon juice</item>
+        <item>cucumbers</item>
+        <item>aioli</item>
+        <item>gouda</item>
+        <item>green beans</item>
+        <item>zest</item>
+        <item>bruschetta</item>
+        <item>garlic powder</item>
+        <item>bouillon</item>
+        <item>geese</item>
+        <item>eggplants</item>
+        <item>turkeys</item>
+        <item>cumin</item>
+        <item>truffles</item>
+        <item>powdered sugar</item>
+        <item>wild rice</item>
+        <item>blue cheese</item>
+        <item>Irish cream liqueur</item>
+        <item>corn syrup</item>
+        <item>shrimp</item>
+        <item>veal</item>
+        <item>horseradish</item>
+        <item>adobo</item>
+        <item>cream of tartar</item>
+        <item>melons</item>
+        <item>ice cream</item>
+        <item>flax seed</item>
+        <item>spaghetti squash</item>
+        <item>custard</item>
+        <item>coconut oil</item>
+        <item>sugar</item>
+        <item>red pepper flakes</item>
+        <item>coconut milk</item>
+        <item>lemon Peel</item>
+        <item>mussels</item>
+        <item>bagels</item>
+        <item>feta cheese</item>
+        <item>garlic</item>
+        <item>butter</item>
+        <item>romaine lettuce</item>
+        <item>alligator</item>
+        <item>date sugar</item>
+        <item>chili sauce</item>
+        <item>hash browns</item>
+        <item>cream cheese</item>
+        <item>raw sugar</item>
+        <item>habanero chilies</item>
+        <item>yogurt</item>
+        <item>orange peels</item>
+        <item>rice wine</item>
+        <item>alfredo sauce</item>
+        <item>ketchup</item>
+        <item>cranberries</item>
+        <item>won ton skins</item>
+        <item>mustard seeds</item>
+        <item>chambord</item>
+        <item>lentils</item>
+        <item>eggs</item>
+        <item>Havarti cheese</item>
+        <item>dried leeks</item>
+        <item>macaroni</item>
+        <item>thyme</item>
+        <item>corned beef</item>
+        <item>beans</item>
+        <item>succotash</item>
+        <item>avocados</item>
+        <item>barbecue sauce</item>
+        <item>condensed milk</item>
+        <item>snapper</item>
+        <item>rum</item>
+        <item>rice</item>
+        <item>gorgonzola</item>
+        <item>broccoli raab</item>
+        <item>leeks</item>
+        <item>oregano</item>
+        <item>water chestnuts</item>
+        <item>rice vinegar</item>
+        <item>swordfish</item>
+    </string-array>
 </resources>

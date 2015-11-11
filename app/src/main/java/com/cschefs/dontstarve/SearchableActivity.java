@@ -23,9 +23,12 @@ import java.util.HashMap;
 
 public class SearchableActivity extends AppCompatActivity {
 
-    private ListView lv;
-    ArrayAdapter<String> adapter;
+    /** Listview listSearch links to list_ingredients_search
+     *  EditText inputSearch links to input_search  */
+    private ListView listSearch;
     EditText inputSearch;
+
+    ArrayAdapter<String> adapter;
     ArrayList<HashMap<String, String>> ingredientList;
 
     @Override
@@ -33,16 +36,15 @@ public class SearchableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchable);
 
-        //ListView Data
-        String ingredients[] = {"Dell Inspiron", "HTC One X", "HTC Wildfire S", "HTC Sense", "HTC Sensation XE",
-                "iPhone 4S", "Samsung Galaxy Note 800",
-                "Samsung Galaxy S3", "MacBook Air", "Mac Mini", "MacBook Pro"};
-        lv = (ListView) findViewById(R.id.list_view);
+        String ingredients[] = getResources().getStringArray(R.array.string_ingredients);
+
+        //Listview and EditText set up
+        listSearch = (ListView) findViewById(R.id.list_ingredients_search);
         inputSearch = (EditText) findViewById(R.id.input_search);
 
         // Adding items to ListView
         adapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.ingredient_name, ingredients);
-        lv.setAdapter(adapter);
+        listSearch.setAdapter(adapter);
 
         inputSearch.addTextChangedListener(new TextWatcher() {
 
