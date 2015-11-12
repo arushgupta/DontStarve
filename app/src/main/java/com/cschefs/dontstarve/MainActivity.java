@@ -3,6 +3,7 @@ package com.cschefs.dontstarve;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -32,6 +33,11 @@ public class MainActivity extends AppCompatActivity {
         Button searchBtn = (Button) findViewById(R.id.search_button);
         Button findBtn = (Button) findViewById(R.id.find_button);
         TextView emptyText = (TextView)findViewById(R.id.empty_list);
+        Toolbar mainToolbar = (Toolbar) findViewById(R.id.toolbar);
+        //Set the toolBar
+        setSupportActionBar(mainToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mainToolbar.setNavigationIcon(R.drawable.ic_logo);
         //Set up the ArrayList
         if (savedInstanceState == null) { arrayIngredients = new ArrayList<String>();}
         else { arrayIngredients = savedInstanceState.getStringArrayList("savedList");}
@@ -42,19 +48,32 @@ public class MainActivity extends AppCompatActivity {
         registerForContextMenu(listIngredients);
         //Set the textView to display when ListView is empty.
         listIngredients.setEmptyView(emptyText);
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.home_menu: {
+                return true;
+            }
+            case R.id.search_menu: {
+                searchFunction();
+                return true;
+            }
+            case R.id.recipe_menu:{
+
+                return true;
+            }
+            //Else is selected.
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -66,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
      *  Opens Search Activity with search functionality embedded */
     public void searchPage(View view) {
         // Do something in response to button
+        searchFunction();
+    }
+    public void searchFunction(){
         Intent searchForIngredient = new Intent(this, SearchableActivity.class);
         startActivityForResult(searchForIngredient, 100);
     }
@@ -85,8 +107,7 @@ public class MainActivity extends AppCompatActivity {
     }
     /** Function to open a context menu*/
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_context, menu);
@@ -96,11 +117,13 @@ public class MainActivity extends AppCompatActivity {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int position = info.position;
         switch (item.getItemId()) {
+            //If delete is selected.
             case R.id.context_delete: {
                 arrayIngredients.remove(position);
                 adapter.notifyDataSetChanged();
                 return true;
             }
+            //Else is selected.
             default:
                 return super.onContextItemSelected(item);
         }
