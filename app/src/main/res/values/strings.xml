@@ -5,9 +5,11 @@
     <string name="search_button_text">Search Ingredients</string>
     <string name="input_search_text">Search for an ingredient here...</string>
     <string name="back_button_text">Back</string>
+    <string name="add_button_text">Add</string>
     <string name="title_activity_search">Search</string>
     <string name="title_activity_searchable">Searchable</string>
-
+    <string name="main_context_delete">Delete</string>
+    <string name="empty_list_text">Your list of ingredients is currently empty. Click Search Ingredients to start adding a list of ingredients!</string>
 
     <string-array name="string_ingredients">
         <item>salmon</item>
