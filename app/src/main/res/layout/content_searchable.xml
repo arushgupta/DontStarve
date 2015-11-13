@@ -22,10 +22,10 @@
         android:layout_below="@+id/input_search"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/back_button_search" />
+        android:layout_above="@+id/new_button_search" />
     <Button
-        android:id="@+id/back_button_search"
-        android:text="@string/back_button_text"
+        android:id="@+id/new_button_search"
+        android:text="@string/new_button_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="27dp"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="43dp"
         android:layout_marginEnd="43dp"
-        android:layout_alignTop="@+id/back_button_search"
+        android:layout_alignTop="@+id/new_button_search"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 

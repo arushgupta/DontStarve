@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //Set up the UI
         listIngredients = (ListView) findViewById(R.id.list_ingredients);
-        Button searchBtn = (Button) findViewById(R.id.search_button);
         Button findBtn = (Button) findViewById(R.id.find_button);
         TextView emptyText = (TextView)findViewById(R.id.empty_list);
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.toolbar);

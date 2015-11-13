@@ -8,6 +8,7 @@
     <string name="search_button_text">Search Ingredients</string>
     <string name="input_search_text">Search for an ingredient here...</string>
     <string name="back_button_text">Back</string>
+    <string name="new_button_text">New Item</string>
     <string name="add_button_text">Add</string>
     <string name="title_activity_search">Search</string>
     <string name="title_activity_searchable">Searchable</string>
