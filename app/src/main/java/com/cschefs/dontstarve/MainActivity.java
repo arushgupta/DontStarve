@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //Set up the UI
         listIngredients = (ListView) findViewById(R.id.list_ingredients);
+        Button clearBtn = (Button) findViewById(R.id.clear_button);
         Button findBtn = (Button) findViewById(R.id.find_button);
         TextView emptyText = (TextView)findViewById(R.id.empty_list);
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -47,6 +48,19 @@ public class MainActivity extends AppCompatActivity {
         registerForContextMenu(listIngredients);
         //Set the textView to display when ListView is empty.
         listIngredients.setEmptyView(emptyText);
+        //clears ingredients from the ingredients ArrayList.
+        clearBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                //If Blank, then do nothing.
+                if (arrayIngredients.isEmpty()) {
+                }
+                //If Exists, then do nothing.
+                else {
+                    arrayIngredients.clear();
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
 
     }
     @Override
@@ -99,8 +113,13 @@ public class MainActivity extends AppCompatActivity {
         if(resultCode == 100){
             String ingredient_to_add = data.getStringExtra("received_ingredient");
             if (ingredient_to_add != null) {
-                arrayIngredients.add(ingredient_to_add);
-                adapter.notifyDataSetChanged();
+                if (arrayIngredients.contains(ingredient_to_add)){
+                    //do nothing
+                }
+                else {
+                    arrayIngredients.add(ingredient_to_add);
+                    adapter.notifyDataSetChanged();
+                }
             }
         }
     }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="S:\Github\DontStarve\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="S:\Github\DontStarve\app\build\intermediates\pre-dexed\debug\classes-efd5cd0dbf264625cced138b8d29ef78d604576e.jar" />
+    </item>
+    <item
+        jar="S:\Github\DontStarve\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="S:\Github\DontStarve\app\build\intermediates\pre-dexed\debug\classes-8659a2b532b60fbe4e3139a9583a866b03594459.jar" />
+    </item>
+    <item
+        jar="S:\Github\DontStarve\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="S:\Github\DontStarve\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-39089e98411b3635e4097365c1068aac017f6e4c.jar" />
+    </item>
+    <item
+        jar="S:\AppData\Local\Android\Sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="S:\Github\DontStarve\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-ae323ba2232a16fb26dd196d1e8f4ecf30360958.jar" />
+    </item>
+    <item
+        jar="S:\Github\DontStarve\app\build\intermediates\exploded-aar\com.android.support\design\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e5c61a3169221a89654ffcaaed47bba51cf071ad">
+        <dex dex="S:\Github\DontStarve\app\build\intermediates\pre-dexed\debug\classes-9b10213cbf3cbfc557e9a180156328a5ed059742.jar" />
+    </item>
+
+</items>
