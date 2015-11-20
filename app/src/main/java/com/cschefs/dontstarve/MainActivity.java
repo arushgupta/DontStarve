@@ -14,6 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,6 +63,49 @@ public class MainActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                 }
             }
+        });
+        //Starts new activity to find recipes. Passes http request to intent
+        findBtn.setOnClickListener(new View.OnClickListener() {
+           public void onClick(View arg0) {
+               String request = "http://food2fork.com/api/search?key={1a51019d6390e0285a6bdec41fdf13a3}";
+               //If Blank (no ingredients) then return top recipes
+               if (arrayIngredients.isEmpty()) {}
+               //If Exists, then add ingredients to request
+               else {
+                   //First ingredient
+                   request += "&q=";
+                   int i = 0;
+                   String temp = arrayIngredients.get(i);
+                   i++;
+                   try {
+                       //Add ingredient with unsafe char encoded properly
+                       request += URLEncoder.encode(temp, "UTF-8");
+                   } catch (UnsupportedEncodingException e) {
+                        throw new AssertionError("UTF-8 not supported");
+                   }
+                   //All other inredients have comma before them
+                   while (i<arrayIngredients.size()) {
+                       //Add Comma
+                       request += "%2C";
+                       //I'th ingredient
+                       temp = arrayIngredients.get(i);
+                       //Sanitize ingredient string and add to query
+                       try {
+                           //Add ingredient with unsafe char encoded properly
+                           request += URLEncoder.encode(temp, "UTF-8");
+                       } catch (UnsupportedEncodingException e) {
+                           throw new AssertionError("UTF-8 not supported");
+                       }
+                       request +=
+                       i++;
+                   }
+               }
+               //TODO: Refactor into new function later
+               //Go into RecipeActivity and pass request in
+               Intent searchForRecipe = new Intent(this,RecipeActivity.class);
+               searchForRecipe.putExtra("request",request);
+               startActivity(searchForRecipe);
+           }
         });
 
     }
