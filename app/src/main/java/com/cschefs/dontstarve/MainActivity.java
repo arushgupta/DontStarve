@@ -100,11 +100,8 @@ public class MainActivity extends AppCompatActivity {
                        i++;
                    }
                }
-               //TODO: Refactor into new function later
                //Go into RecipeActivity and pass request in
-               Intent searchForRecipe = new Intent(this,RecipeActivity.class);
-               searchForRecipe.putExtra("request",request);
-               startActivity(searchForRecipe);
+               findRecipe(request);
            }
         });
 
@@ -149,6 +146,11 @@ public class MainActivity extends AppCompatActivity {
     public void searchFunction(){
         Intent searchForIngredient = new Intent(this, SearchableActivity.class);
         startActivityForResult(searchForIngredient, 100);
+    }
+    public void findRecipe(String request){
+        Intent searchForRecipe = new Intent(this,RecipeActivity.class);
+        searchForRecipe.putExtra("request",request);
+        startActivity(searchForRecipe);
     }
     /** Function to read the result from newly created activities */
     @Override
