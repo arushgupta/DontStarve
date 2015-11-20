@@ -36,15 +36,19 @@ public class SearchableActivity extends AppCompatActivity {
     private ArrayAdapter<String> searchAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         //Automatically call to set up the activity page.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchable);
+
         //Set up the list of ingredients
         String ingredients_array[] = getResources().getStringArray(R.array.string_ingredients);
+
         //Testing as ArrayList to add dynamically.
         List<String> ingredients_list = Arrays.asList(ingredients_array);
         ingredients = new ArrayList<String>();
         ingredients.addAll(ingredients_list);
+
         //Set up the UI
         listSearch = (ListView) findViewById(R.id.list_ingredients_search);
         inputSearch = (EditText) findViewById(R.id.input_search);

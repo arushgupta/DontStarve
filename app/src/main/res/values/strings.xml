@@ -124,4 +124,5 @@
         <item>rice vinegar</item>
         <item>swordfish</item>
     </string-array>
+    <string name="title_activity_recipe">RecipeActivity</string>
 </resources>

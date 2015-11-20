@@ -25,29 +25,37 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         //Automatically call to set up the activity page.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //Set up the UI
         listIngredients = (ListView) findViewById(R.id.list_ingredients);
         Button clearBtn = (Button) findViewById(R.id.clear_button);
         Button findBtn = (Button) findViewById(R.id.find_button);
         TextView emptyText = (TextView)findViewById(R.id.empty_list);
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.toolbar);
+
         //Set the toolBar
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         mainToolbar.setNavigationIcon(R.drawable.ic_logo);
+
         //Set up the ArrayList
         if (savedInstanceState == null) { arrayIngredients = new ArrayList<String>();}
         else { arrayIngredients = savedInstanceState.getStringArrayList("savedList");}
+
         //Add items and adapter to ListView
         adapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.ingredient_name, arrayIngredients);
         listIngredients.setAdapter(adapter);
+
         //Register the listView for context menu functionality.
         registerForContextMenu(listIngredients);
+
         //Set the textView to display when ListView is empty.
         listIngredients.setEmptyView(emptyText);
+
         //clears ingredients from the ingredients ArrayList.
         clearBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
