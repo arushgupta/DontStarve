@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         //Starts new activity to find recipes. Passes http request to intent
         findBtn.setOnClickListener(new View.OnClickListener() {
            public void onClick(View arg0) {
-               String request = "http://food2fork.com/api/search?key={1a51019d6390e0285a6bdec41fdf13a3}";
+               String request = "http://food2fork.com/api/search?key=1a51019d6390e0285a6bdec41fdf13a3";
                //If Blank (no ingredients) then return top recipes
                if (arrayIngredients.isEmpty()) {}
                //If Exists, then add ingredients to request
@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
                        } catch (UnsupportedEncodingException e) {
                            throw new AssertionError("UTF-8 not supported");
                        }
-                       request +=
                        i++;
                    }
                }
