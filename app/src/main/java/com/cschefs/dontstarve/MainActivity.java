@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                }
                //TODO: Refactor into new function later
                //Go into RecipeActivity and pass request in
-               Intent searchForRecipe = new Intent(this,RecipeActivity.class);
+               Intent searchForRecipe = new Intent(this, RecipeActivity.class);
                searchForRecipe.putExtra("request",request);
                startActivity(searchForRecipe);
            }
