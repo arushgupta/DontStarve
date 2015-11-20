@@ -20,6 +20,9 @@ local.properties
 .project
 
 # Android Studio
+build/
+build/intermediates/dex-cache/cache.xml
+.idea
 .idea/
 .gradle
 /*/local.properties
