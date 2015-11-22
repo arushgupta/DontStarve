@@ -1,5 +1,6 @@
 package com.cschefs.dontstarve;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.util.ArrayList;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 
 public class MainActivity extends AppCompatActivity {
     /** ListView listIngredients links to list_ingredients. Displays list of ingredients chosen */
@@ -23,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> arrayIngredients;
     /** Other variables needed */
     ArrayAdapter<String> adapter;
+
+    private AlertDialog.Builder dialogBuilder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Automatically call to set up the activity page.
@@ -32,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
         listIngredients = (ListView) findViewById(R.id.list_ingredients);
         Button searchBtn = (Button) findViewById(R.id.search_button);
         Button findBtn = (Button) findViewById(R.id.find_button);
+        Button clearBtn = (Button) findViewById(R.id.clear_button);
+
+
+       // clearBtn.setOnLongClickListener();
         TextView emptyText = (TextView)findViewById(R.id.empty_list);
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.toolbar);
         //Set the toolBar
@@ -90,6 +99,32 @@ public class MainActivity extends AppCompatActivity {
     public void searchFunction(){
         Intent searchForIngredient = new Intent(this, SearchableActivity.class);
         startActivityForResult(searchForIngredient, 100);
+    }
+
+    private void clearAllDialog(){
+        dialogBuilder = new AlertDialog.Builder(this);
+        String s1 = "Are you sure you want to clear all?";
+        dialogBuilder.setTitle(s1);
+        dialogBuilder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                arrayIngredients.clear();
+                adapter.notifyDataSetChanged();
+            }
+        });
+        dialogBuilder.setPositiveButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Does nothing.
+            }
+        });
+        AlertDialog dialogConfirm = dialogBuilder.create();
+        dialogConfirm.show();
+
+    }
+
+    public void clearAll(View view) {
+        clearAllDialog();
     }
     /** Function to read the result from newly created activities */
     @Override
