@@ -1,5 +1,8 @@
 package com.cschefs.dontstarve;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> arrayIngredients;
     /** Other variables needed */
     ArrayAdapter<String> adapter;
+    private AlertDialog.Builder dialogBuilder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -59,19 +63,6 @@ public class MainActivity extends AppCompatActivity {
         //Set the textView to display when ListView is empty.
         listIngredients.setEmptyView(emptyText);
 
-        //clears ingredients from the ingredients ArrayList.
-        clearBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-                //If Blank, then do nothing.
-                if (arrayIngredients.isEmpty()) {
-                }
-                //If Exists, then do nothing.
-                else {
-                    arrayIngredients.clear();
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        });
         //Starts new activity to find recipes. Passes http request to intent
         findBtn.setOnClickListener(new View.OnClickListener() {
            public void onClick(View arg0) {
@@ -159,6 +150,31 @@ public class MainActivity extends AppCompatActivity {
         Intent searchForRecipe = new Intent(this,RecipeActivity.class);
         searchForRecipe.putExtra("request",request);
         startActivity(searchForRecipe);
+    }
+    private void clearAllDialog(){
+        dialogBuilder = new AlertDialog.Builder(this);
+        String s1 = "Are you sure you want to clear all?";
+        dialogBuilder.setTitle(s1);
+        dialogBuilder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                arrayIngredients.clear();
+                adapter.notifyDataSetChanged();
+            }
+        });
+        dialogBuilder.setPositiveButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Does nothing.
+            }
+        });
+        AlertDialog dialogConfirm = dialogBuilder.create();
+        dialogConfirm.show();
+
+    }
+
+    public void clearAll(View view) {
+        clearAllDialog();
     }
     /** Function to read the result from newly created activities */
     @Override
