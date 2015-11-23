@@ -54,7 +54,7 @@ public class WebRequest {
             if (requestmethod == POSTRequest) {
                 conn.setRequestMethod("POST");
             } else if (requestmethod == GETRequest) {
-                conn.setRequestMethod("GETRequest");
+                conn.setRequestMethod("GET");
             }
 
             if (params != null) {

@@ -123,7 +123,6 @@ public class RecipeActivity extends AppCompatActivity {
     }
 
     private class GetRecipes extends AsyncTask<Void, Void, Void> {
-
         // Hashmap for ListView
         ArrayList<HashMap<String, String>> recipeList;
         ProgressDialog proDialog;
@@ -147,7 +146,6 @@ public class RecipeActivity extends AppCompatActivity {
             String jsonStr = webreq.makeWebServiceCall(queryString, WebRequest.GETRequest);
 
             Log.d("Response: ", "> " + jsonStr);
-
             recipeList = ParseJSON(jsonStr);
 
             return null;
