@@ -96,12 +96,11 @@ public class MainActivity extends AppCompatActivity {
                        } catch (UnsupportedEncodingException e) {
                            throw new AssertionError("UTF-8 not supported");
                        }
-                       request +=
                        i++;
                    }
                }
                //Go into RecipeActivity and pass request in
-               findRecipe(request);
+               //findRecipe(request);
            }
         });
 
@@ -147,11 +146,11 @@ public class MainActivity extends AppCompatActivity {
         Intent searchForIngredient = new Intent(this, SearchableActivity.class);
         startActivityForResult(searchForIngredient, 100);
     }
-    public void findRecipe(String request){
+    /*public void findRecipe(String request){
         Intent searchForRecipe = new Intent(this,RecipeActivity.class);
         searchForRecipe.putExtra("request",request);
         startActivity(searchForRecipe);
-    }
+    }*/
     /** Function to read the result from newly created activities */
     @Override
     protected void onActivityResult(int requestCode,
