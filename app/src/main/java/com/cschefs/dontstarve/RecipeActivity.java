@@ -16,7 +16,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +34,7 @@ import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -42,6 +45,9 @@ public class RecipeActivity extends AppCompatActivity {
     private String queryString;
     //Array Adapter to put recipes in list view
     ArrayAdapter<String> arrayAdapter;
+    // JSON Node names
+    private static final String TAG_RECIPES = "recipes";
+    private static final String TAG_TITLE = "title";
     //Instance variables
     static int CONNECTION_TIMEOUT = 10000;
     static int DATARETRIEVAL_TIMEOUT = 10000;
@@ -55,8 +61,8 @@ public class RecipeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe);
 
         //Getting the Request URL from Intent
-//        Bundle p = getIntent().getExtras();
-//        queryString = p.getString("request");
+        Bundle p = getIntent().getExtras();
+        queryString = p.getString("request");
 
         //Set up the UI
         listOfRecipes = (ListView) findViewById(R.id.list_recipes);
@@ -67,6 +73,8 @@ public class RecipeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         mainToolbar.setNavigationIcon(R.drawable.ic_logo);
 
+        // Call async task which returns JSON object
+        new GetRecipes().execute();
 //        List<String> recipes = new ArrayList<String>();
 //        recipes = findAllItems();
 //        new RequestItemsServiceTask().execute();
@@ -77,6 +85,92 @@ public class RecipeActivity extends AppCompatActivity {
 
     }
 
+    private ArrayList<HashMap<String, String>> ParseJSON(String json) {
+        if (json != null) {
+            try {
+                // Hashmap for ListView
+                ArrayList<HashMap<String, String>> recipeList = new ArrayList<HashMap<String, String>>();
+
+                JSONObject jsonObj = new JSONObject(json);
+
+                // Getting JSON Array node
+                JSONArray recipes = jsonObj.getJSONArray(TAG_RECIPES);
+
+                // looping through All Recipes
+                for (int i = 0; i < recipes.length(); i++) {
+                    JSONObject c = recipes.getJSONObject(i);
+
+                    String title = c.getString(TAG_TITLE);
+
+                    // tmp hashmap for single student
+                    HashMap<String, String> recipe = new HashMap<String, String>();
+
+                    // adding every child node to HashMap key => value
+                    recipe.put(TAG_TITLE, title);
+
+                    // adding student to students list
+                    recipeList.add(recipe);
+                }
+                return recipeList;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else {
+            Log.e("ServiceHandler", "No data received from HTTP request");
+            return null;
+        }
+    }
+
+    private class GetRecipes extends AsyncTask<Void, Void, Void> {
+
+        // Hashmap for ListView
+        ArrayList<HashMap<String, String>> recipeList;
+        ProgressDialog proDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress loading dialog
+            proDialog = new ProgressDialog(RecipeActivity.this);
+            proDialog.setMessage("Please wait...");
+            proDialog.setCancelable(false);
+            proDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            // Creating service handler class instance
+            WebRequest webreq = new WebRequest();
+
+            // Making a request to url and getting response
+            String jsonStr = webreq.makeWebServiceCall(queryString, WebRequest.GETRequest);
+
+            Log.d("Response: ", "> " + jsonStr);
+
+            recipeList = ParseJSON(jsonStr);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void requestresult) {
+            super.onPostExecute(requestresult);
+            // Dismiss the progress dialog
+            if (proDialog.isShowing())
+                proDialog.dismiss();
+            /**
+             * Updating received data from JSON into ListView
+            * */
+
+            ListAdapter adapter = new SimpleAdapter(
+                    RecipeActivity.this, recipeList,
+                    R.layout.list_item, new String []{TAG_TITLE}, new int [] {R.id.ingredient_name});
+
+            listOfRecipes.setAdapter(adapter);
+        }
+
+    }
 //    /**
 //     * populate list in background while showing progress dialog.
 //     */
