@@ -31,7 +31,7 @@ public class SearchableActivity extends AppCompatActivity {
     /** String ingredient_name parses the selected ingredients name to be passed to MainActivity*/
     private String ingredient_name;
     /** ArrayList to organize objects */
-    private ArrayList<String> ingredients;
+    private static ArrayList<String> ingredients = new ArrayList<String>();
     /** Other variables needed */
     private ArrayAdapter<String> searchAdapter;
     @Override
@@ -46,7 +46,7 @@ public class SearchableActivity extends AppCompatActivity {
 
         //Testing as ArrayList to add dynamically.
         List<String> ingredients_list = Arrays.asList(ingredients_array);
-        ingredients = new ArrayList<String>();
+        if (ingredients.isEmpty())
         ingredients.addAll(ingredients_list);
 
         //Set up the UI
