@@ -20,6 +20,7 @@
     <string name="item_not_found">The following ingredient is not found.</string>
     <string name="item_is_empty">No ingredient to add.</string>
     <string name="item_exists">Item already exists.</string>
+    <string name="recipe_context_url">View Recipe</string>
 
 
     <string-array name="string_ingredients">
