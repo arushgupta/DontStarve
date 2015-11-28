@@ -1,7 +1,6 @@
 package com.cschefs.dontstarve;
 
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -26,84 +26,33 @@ public class MainActivity extends AppCompatActivity {
     /** ListView listIngredients links to list_ingredients. Displays list of ingredients chosen */
     private ListView listIngredients;
     /** ArrayList arrayIngredients allows for storage of ingredients chosen */
-    ArrayList<String> arrayIngredients;
+    private static ArrayList<String> arrayIngredients;
     /** Other variables needed */
-    ArrayAdapter<String> adapter;
-    private AlertDialog.Builder dialogBuilder;
+    private ArrayAdapter<String> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         //Automatically call to set up the activity page.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         //Set up the UI
         listIngredients = (ListView) findViewById(R.id.list_ingredients);
         Button clearBtn = (Button) findViewById(R.id.clear_button);
         Button findBtn = (Button) findViewById(R.id.find_button);
         TextView emptyText = (TextView)findViewById(R.id.empty_list);
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.toolbar);
-
         //Set the toolBar
         setSupportActionBar(mainToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle(R.string.home_menu_text);
         mainToolbar.setNavigationIcon(R.drawable.ic_logo);
-
         //Set up the ArrayList
-        if (savedInstanceState == null) { arrayIngredients = new ArrayList<String>();}
-        else { arrayIngredients = savedInstanceState.getStringArrayList("savedList");}
-
+        if (arrayIngredients == null) { arrayIngredients = new ArrayList<String>();}
         //Add items and adapter to ListView
         adapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.ingredient_name, arrayIngredients);
         listIngredients.setAdapter(adapter);
-
-        //Register the listView for context menu functionality.
-        registerForContextMenu(listIngredients);
-
         //Set the textView to display when ListView is empty.
         listIngredients.setEmptyView(emptyText);
-
-        //Starts new activity to find recipes. Passes http request to intent
-        findBtn.setOnClickListener(new View.OnClickListener() {
-           public void onClick(View arg0) {
-               String request = "http://food2fork.com/api/search?key=1a51019d6390e0285a6bdec41fdf13a3";
-               //If Blank (no ingredients) then return top recipes
-               if (arrayIngredients.isEmpty()) {}
-               //If Exists, then add ingredients to request
-               else {
-                   //First ingredient
-                   request += "&q=";
-                   int i = 0;
-                   String temp = arrayIngredients.get(i);
-                   i++;
-                   try {
-                       //Add ingredient with unsafe char encoded properly
-                       request += URLEncoder.encode(temp, "UTF-8");
-                   } catch (UnsupportedEncodingException e) {
-                        throw new AssertionError("UTF-8 not supported");
-                   }
-                   //All other inredients have comma before them
-                   while (i<arrayIngredients.size()) {
-                       //Add Comma
-                       request += "%2C";
-                       //I'th ingredient
-                       temp = arrayIngredients.get(i);
-                       //Sanitize ingredient string and add to query
-                       try {
-                           //Add ingredient with unsafe char encoded properly
-                           request += URLEncoder.encode(temp, "UTF-8");
-                       } catch (UnsupportedEncodingException e) {
-                           throw new AssertionError("UTF-8 not supported");
-                       }
-                       i++;
-                   }
-               }
-               //Go into RecipeActivity and pass request in
-               findRecipe(request);
-
-           }
-        });
-
+        //Register the listView for context menu functionality.
+        registerForContextMenu(listIngredients);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -115,14 +64,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.home_menu: {
+                //Nothing.
                 return true;
             }
             case R.id.search_menu: {
-                searchFunction();
+                searchIngredients();
                 return true;
             }
             case R.id.recipe_menu:{
-
+                recipeRequest();
                 return true;
             }
             //Else is selected.
@@ -130,51 +80,14 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        // Save the user's current state
-        outState.putStringArrayList("savedList", arrayIngredients);
-    }
+    /** */
+    public void searchIngredients(){
+        searchFunction(); }
     /** Function is called when the user clicks the Search Ingredients Button
      *  Opens Search Activity with search functionality embedded */
-    public void searchPage(View view) {
-        // Do something in response to button
-        searchFunction();
-    }
-    public void searchFunction(){
+    private void searchFunction(){
         Intent searchForIngredient = new Intent(this, SearchableActivity.class);
         startActivityForResult(searchForIngredient, 100);
-    }
-    public void findRecipe(String request){
-        Intent searchForRecipe = new Intent(this,RecipeActivity.class);
-        searchForRecipe.putExtra("request",request);
-        startActivity(searchForRecipe);
-    }
-    private void clearAllDialog(){
-        dialogBuilder = new AlertDialog.Builder(this);
-        String s1 = "Are you sure you want to clear all?";
-        dialogBuilder.setTitle(s1);
-        dialogBuilder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                arrayIngredients.clear();
-                adapter.notifyDataSetChanged();
-            }
-        });
-        dialogBuilder.setPositiveButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //Does nothing.
-            }
-        });
-        AlertDialog dialogConfirm = dialogBuilder.create();
-        dialogConfirm.show();
-
-    }
-
-    public void clearAll(View view) {
-        clearAllDialog();
     }
     /** Function to read the result from newly created activities */
     @Override
@@ -194,6 +107,87 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+        if(resultCode == 200){
+            recipeRequest();
+        }
+        if(resultCode == 300){
+            searchIngredients();
+        }
+    }
+    /** */
+    public void findRecipe(View view){ recipeRequest(); }
+    /** */
+    private void recipeRequest(){
+        String request = "http://food2fork.com/api/search?key=1a51019d6390e0285a6bdec41fdf13a3";
+        //If Blank (no ingredients) then return top recipes
+        if (arrayIngredients.isEmpty()) {}
+        //If Exists, then add ingredients to request
+        else {
+            //First ingredient
+            request += "&q=";
+            int i = 0;
+            String temp = arrayIngredients.get(i);
+            i++;
+            try {
+                //Add ingredient with unsafe char encoded properly
+                request += URLEncoder.encode(temp, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new AssertionError("UTF-8 not supported");
+            }
+            //All other inredients have comma before them
+            while (i<arrayIngredients.size()) {
+                //Add Comma
+                request += "%2C";
+                //I'th ingredient
+                temp = arrayIngredients.get(i);
+                //Sanitize ingredient string and add to query
+                try {
+                    //Add ingredient with unsafe char encoded properly
+                    request += URLEncoder.encode(temp, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    throw new AssertionError("UTF-8 not supported");
+                }
+                i++;
+            }
+        }
+        //Go into RecipeActivity and pass request in
+        recipeFunction(request);
+    }
+    /** */
+    private void recipeFunction(String request){
+        Intent searchForRecipe = new Intent(this,RecipeActivity.class);
+        searchForRecipe.putExtra("request",request);
+        startActivityForResult(searchForRecipe, 300);
+    }
+    /** */
+    public void clearAll(View view) {
+        if (arrayIngredients.isEmpty()){
+            Toast.makeText(getApplicationContext(), R.string.list_is_empty, Toast.LENGTH_SHORT).show();
+        }
+        else{
+            clearAllDialog();
+        }
+    }
+    /** */
+    private void clearAllDialog(){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle(R.string.clear_all_text);
+        dialogBuilder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                arrayIngredients.clear();
+                adapter.notifyDataSetChanged();
+            }
+        });
+        dialogBuilder.setPositiveButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog dialogConfirm = dialogBuilder.create();
+        dialogConfirm.show();
+
     }
     /** Function to open a context menu*/
     @Override
