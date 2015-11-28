@@ -42,20 +42,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public class RecipeActivity extends AppCompatActivity {
-    /**
-     * Displays list of ingredients
-     */
+    /** Displays list of ingredients */
     private ListView listOfRecipes;
-    // Request URL for the API
+    /** Request URL for the API */
     private String queryString;
-    // Hashmap for ListView
+    /** Hashmap for ListView */
     private static ArrayList<HashMap<String, String>> recipeList;
-    // JSON Node names
+    /** JSON Node names */
     private static final String TAG_COUNT = "count";
     private static final String TAG_RECIPES = "recipes";
     private static final String TAG_TITLE = "title";
     private static final String TAG_URL = "source_url";
-    //Instance variables
+    /** Instance variables */
     static int CONNECTION_TIMEOUT = 10000;
     static int DATARETRIEVAL_TIMEOUT = 10000;
     static int MAX_RECIPES = 30;
@@ -67,32 +65,54 @@ public class RecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
-        //Getting the Request URL from Intent
-        Bundle p = getIntent().getExtras();
-        queryString = p.getString("request");
-
         //Set up the UI
         listOfRecipes = (ListView) findViewById(R.id.list_recipes);
 
         //Set the toolbar
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mainToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle(R.string.recipe_menu_text);
         mainToolbar.setNavigationIcon(R.drawable.ic_logo);
+
+        //Getting the Request URL from Intent
+        Bundle p = getIntent().getExtras();
+        queryString = p.getString("request");
 
         //Register the listView for context menu functionality.
         registerForContextMenu(listOfRecipes);
 
         // Call async task which returns JSON object
         new GetRecipes().execute();
-//        List<String> recipes = new ArrayList<String>();
-//        recipes = findAllItems();
-//        new RequestItemsServiceTask().execute();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        //Add items and adapter to ListView
-//        arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.list_recipes, recipes);
-//        listOfRecipes.setAdapter(arrayAdapter);
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.home_menu: {
+                Intent a = new Intent(this, MainActivity.class);
+                startActivity(a);
+                return true;
+            }
+            case R.id.search_menu: {
+                Intent recipe_done = getIntent();
+                setResult(300, recipe_done);
+                finish();
+                return true;
+            }
+            case R.id.recipe_menu:{
+                //Nothing.
+                return true;
+            }
+            //Else is selected.
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private ArrayList<HashMap<String, String>> ParseJSON(String json) {
@@ -182,33 +202,6 @@ public class RecipeActivity extends AppCompatActivity {
             listOfRecipes.setAdapter(adapter);
         }
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.home_menu: {
-                finish();
-                return true;
-            }
-            case R.id.search_menu: {
-//                searchFunction();
-                return true;
-            }
-            case R.id.recipe_menu: {
-                return true;
-            }
-            //Else is selected.
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
     /** Function to open a context menu*/
     @Override

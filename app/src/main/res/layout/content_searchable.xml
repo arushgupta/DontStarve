@@ -32,7 +32,8 @@
         android:layout_marginStart="27dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="newItem"/>
     <Button
         android:id="@+id/add_button_search"
         android:text="@string/add_button_text"
@@ -42,6 +43,7 @@
         android:layout_marginEnd="43dp"
         android:layout_alignTop="@+id/new_button_search"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="addIngredient"/>
 
 </RelativeLayout>
