@@ -1,8 +1,5 @@
 package com.cschefs.dontstarve;
 
-/**
- * Created by xneeter on 11/23/2015.
- */
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
