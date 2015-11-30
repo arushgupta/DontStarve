@@ -17,6 +17,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private static ArrayList<String> arrayIngredients;
     /** Other variables needed */
     private ArrayAdapter<String> adapter;
+    /*Shared preferences */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Automatically call to set up the activity page.
@@ -165,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), R.string.list_is_empty, Toast.LENGTH_SHORT).show();
         }
         else{
+           // editor.
             clearAllDialog();
         }
     }

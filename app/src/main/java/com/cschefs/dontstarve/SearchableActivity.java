@@ -3,6 +3,8 @@ package com.cschefs.dontstarve;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +36,8 @@ public class SearchableActivity extends AppCompatActivity {
     private static ArrayList<String> ingredients = new ArrayList<String>();
     /** Other variables needed */
     private ArrayAdapter<String> searchAdapter;
+    /*Shared preferences */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Automatically call to set up the activity page.
@@ -152,6 +156,7 @@ public class SearchableActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String addedIngredient = dialogInput.getText().toString();
                 addNewItem(addedIngredient);
+
             }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
