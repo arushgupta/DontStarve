@@ -49,6 +49,11 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
 
     @Test
     public void testEnterInNewIngredient() throws Exception{
+        // Test searching for recipes using button without ingredients
+        onView(withId(R.id.recipe_menu)).perform(click());
+        // Go back to main menu
+        onView(withId(R.id.home_menu)).perform(click());
+
         // Click Search Button
         onView(withId(R.id.search_menu)).perform(click());
 
@@ -66,13 +71,12 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
 
         // Check that chicken is there
         onView(withText("chicken")).check(matches(isDisplayed()));
-        /*
+
         // Search for ingredients
         onView(withId(R.id.find_button)).perform(click());
 
         // Go back to main menu
         onView(withId(R.id.home_menu)).perform(click());
-        */
 
 
         // Clear ingredient
