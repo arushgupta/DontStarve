@@ -29,6 +29,7 @@
         android:layout_alignParentEnd="true" />
     <Button
         android:id="@+id/clear_button"
+        android:onClick="clearAll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/clear_button_text"
@@ -42,7 +43,8 @@
         android:text="@string/find_button_text"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="findRecipe"/>
 
 
 </RelativeLayout>

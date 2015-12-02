@@ -31,24 +31,14 @@ public class SearchableActivity extends AppCompatActivity {
     /** String ingredient_name parses the selected ingredients name to be passed to MainActivity*/
     private String ingredient_name;
     /** ArrayList to organize objects */
-    private ArrayList<String> ingredients;
+    private static ArrayList<String> ingredients = new ArrayList<String>();
     /** Other variables needed */
     private ArrayAdapter<String> searchAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         //Automatically call to set up the activity page.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchable);
-
-        //Set up the list of ingredients
-        String ingredients_array[] = getResources().getStringArray(R.array.string_ingredients);
-
-        //Testing as ArrayList to add dynamically.
-        List<String> ingredients_list = Arrays.asList(ingredients_array);
-        ingredients = new ArrayList<String>();
-        ingredients.addAll(ingredients_list);
-
         //Set up the UI
         listSearch = (ListView) findViewById(R.id.list_ingredients_search);
         inputSearch = (EditText) findViewById(R.id.input_search);
@@ -57,8 +47,14 @@ public class SearchableActivity extends AppCompatActivity {
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.toolbar);
         //Set the toolBar
         setSupportActionBar(mainToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle(R.string.search_menu_text);
         mainToolbar.setNavigationIcon(R.drawable.ic_logo);
+        //Set up the list of ingredients
+        if (ingredients.isEmpty()) {
+            String ingredients_array[] = getResources().getStringArray(R.array.string_ingredients);
+            List<String> ingredients_list = Arrays.asList(ingredients_array);
+            ingredients.addAll(ingredients_list);
+        }
         //Add items and adapter to ListView
         searchAdapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.ingredient_name, ingredients);
         listSearch.setAdapter(searchAdapter);
@@ -68,12 +64,6 @@ public class SearchableActivity extends AppCompatActivity {
                 Object ingredient_obj = arg0.getItemAtPosition(arg2);
                 ingredient_name = ingredient_obj.toString();
                 inputSearch.setText(ingredient_name);
-            }
-        });
-        //Add a new ingredient to the ingredients ArrayList.
-        newBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-                showNewItemDialog();
             }
         });
         //Text watcher is used to filter the search and display as you type.
@@ -93,12 +83,6 @@ public class SearchableActivity extends AppCompatActivity {
             public void afterTextChanged(Editable arg0) {
             }
         });
-        //Add the selected item.
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-                addIngredient();
-            }
-        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -110,13 +94,18 @@ public class SearchableActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.home_menu: {
-                finish();
+                Intent a = new Intent(this, MainActivity.class);
+                startActivity(a);
                 return true;
             }
             case R.id.search_menu: {
+                //Nothing.
                 return true;
             }
             case R.id.recipe_menu:{
+                Intent search_done = getIntent();
+                setResult(200, search_done);
+                finish();
                 return true;
             }
             //Else is selected.
@@ -125,7 +114,9 @@ public class SearchableActivity extends AppCompatActivity {
         }
     }
     /** Adds ingredient to the main page ingredients list. */
-    public void addIngredient(){
+    public void addIngredient(View view){ addFunction(); }
+    /** */
+    private void addFunction(){
         Intent search_done = getIntent();
         ingredient_name = inputSearch.getText().toString();
         //If Blank, then do nothing.
@@ -143,31 +134,10 @@ public class SearchableActivity extends AppCompatActivity {
             finish();
         }
     }
-    /** Adds a new item to ingredients list and updates or repopulates the listView to match.*/
-    public void addNewItem(String item){
-        // If the new item is blank, then nothing happens. This should never be reached. Precaution only.
-        if(item.matches(""));
-        // If the new item already exists, then help the user by showing it in the EditText field.
-        else if(ingredients.contains(item)){
-            inputSearch.setText(item);
-            Toast.makeText(getApplicationContext(), R.string.item_exists, Toast.LENGTH_SHORT).show();
-        }
-        // Else, the item does not exist and should be added to the ingredients list.
-        else{
-            if(inputSearch.getText().toString().matches("")){//Encountered glitch. TEMP FIX!!!
-                ingredients.add(item);
-            }
-            else {
-                ingredients.add(item);
-                searchAdapter.clear();
-                searchAdapter.addAll(ingredients);
-            }
-            searchAdapter.notifyDataSetChanged();
-            inputSearch.setText("");
-        }
-    }
+    /** */
+    public void newItem(View view){ newItemDialog(); }
     /** Creates an AlertDialog that prompts the user for input in an EditText*/
-    public void showNewItemDialog(){
+    private void newItemDialog(){
         // Set up the AlertDialog onto the current context. Also set up the UI.
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SearchableActivity.this);
         LayoutInflater dialogInflater = SearchableActivity.this.getLayoutInflater();
@@ -216,6 +186,28 @@ public class SearchableActivity extends AppCompatActivity {
             }
         });
     }
-
+    /** Adds a new item to ingredients list and updates or repopulates the listView to match.*/
+    private void addNewItem(String item){
+        // If the new item is blank, then nothing happens. This should never be reached. Precaution only.
+        if(item.matches(""));
+            // If the new item already exists, then help the user by showing it in the EditText field.
+        else if(ingredients.contains(item)){
+            inputSearch.setText(item);
+            Toast.makeText(getApplicationContext(), R.string.item_exists, Toast.LENGTH_SHORT).show();
+        }
+        // Else, the item does not exist and should be added to the ingredients list.
+        else{
+            if(inputSearch.getText().toString().matches("")){//Encountered glitch. TEMP FIX!!!
+                ingredients.add(item);
+            }
+            else {
+                ingredients.add(item);
+                searchAdapter.clear();
+                searchAdapter.addAll(ingredients);
+            }
+            searchAdapter.notifyDataSetChanged();
+            inputSearch.setText("");
+        }
+    }
 
 }

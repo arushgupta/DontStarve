@@ -3,6 +3,7 @@ package com.cschefs.dontstarve;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,12 +12,16 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,17 +37,23 @@ import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
 public class RecipeActivity extends AppCompatActivity {
     /** Displays list of ingredients */
     private ListView listOfRecipes;
-    // Request URL for the API
+    /** Request URL for the API */
     private String queryString;
-    //Array Adapter to put recipes in list view
-    ArrayAdapter<String> arrayAdapter;
-    //Instance variables
+    /** Hashmap for ListView */
+    private static ArrayList<HashMap<String, String>> recipeList;
+    /** JSON Node names */
+    private static final String TAG_COUNT = "count";
+    private static final String TAG_RECIPES = "recipes";
+    private static final String TAG_TITLE = "title";
+    private static final String TAG_URL = "source_url";
+    /** Instance variables */
     static int CONNECTION_TIMEOUT = 10000;
     static int DATARETRIEVAL_TIMEOUT = 10000;
     static int MAX_RECIPES = 30;
@@ -54,150 +65,25 @@ public class RecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
-        //Getting the Request URL from Intent
-//        Bundle p = getIntent().getExtras();
-//        queryString = p.getString("request");
-
         //Set up the UI
         listOfRecipes = (ListView) findViewById(R.id.list_recipes);
 
         //Set the toolbar
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mainToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle(R.string.recipe_menu_text);
         mainToolbar.setNavigationIcon(R.drawable.ic_logo);
 
-//        List<String> recipes = new ArrayList<String>();
-//        recipes = findAllItems();
-//        new RequestItemsServiceTask().execute();
+        //Getting the Request URL from Intent
+        Bundle p = getIntent().getExtras();
+        queryString = p.getString("request");
 
-        //Add items and adapter to ListView
-//        arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.list_recipes, recipes);
-//        listOfRecipes.setAdapter(arrayAdapter);
+        //Register the listView for context menu functionality.
+        registerForContextMenu(listOfRecipes);
 
+        // Call async task which returns JSON object
+        new GetRecipes().execute();
     }
-
-//    /**
-//     * populate list in background while showing progress dialog.
-//     */
-//    private class RequestItemsServiceTask extends AsyncTask<Void, Void, Void> {
-//        private ProgressDialog dialog = new ProgressDialog(ItemsListActivity.this);
-//        private List<String> recipes;
-//
-//        @Override
-//        protected void onPreExecute() {
-//            // TODO i18n
-//            dialog.setMessage("Please wait..");
-//            dialog.show();
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Void... unused) {
-//            // The ItemService would contain the method showed
-//            // in the previous paragraph
-//            ItemService itemService = ItemService.getCurrentInstance();
-//            try {
-//                recipes = itemService.findAllItems();
-//            } catch (Throwable e) {
-//                // handle exceptions
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void unused) {
-//
-//            // setListAdapter must not be called at doInBackground()
-//            // since it would be executed in separate Thread
-//            setAdapter(new ArrayAdapter<String>(ItemsListActivity.this,
-//                            R.layout.list_item, recipes));
-//
-//            if (dialog.isShowing()) {
-//                dialog.dismiss();
-//            }
-//        }
-//
-//        public JSONObject requestWebService(String serviceUrl) {
-//            disableConnectionReuseIfNecessary();
-//
-//            HttpURLConnection urlConnection = null;
-//            try {
-//                // create connection
-//                URL urlToRequest = new URL(serviceUrl);
-//                urlConnection = (HttpURLConnection)
-//                        urlToRequest.openConnection();
-//                urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
-//                urlConnection.setReadTimeout(DATARETRIEVAL_TIMEOUT);
-//
-//                // handle issues
-//                int statusCode = urlConnection.getResponseCode();
-//                if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
-//                    // handle unauthorized (if service requires user login)
-//                } else if (statusCode != HttpURLConnection.HTTP_OK) {
-//                    // handle any other errors, like 404, 500,..
-//                }
-//
-//                // create JSON object from content
-//                InputStream in = new BufferedInputStream(
-//                        urlConnection.getInputStream());
-//                return new JSONObject(getResponseText(in));
-//
-//            } catch (MalformedURLException e) {
-//                // URL is invalid
-//            } catch (SocketTimeoutException e) {
-//                // data retrieval or connection timed out
-//            } catch (IOException e) {
-//                // could not read response body
-//                // (could not create input stream)
-//            } catch (JSONException e) {
-//                // response body is no valid JSON string
-//            } finally {
-//                if (urlConnection != null) {
-//                    urlConnection.disconnect();
-//                }
-//            }
-//
-//            return null;
-//        }
-//
-//        /**
-//         * required in order to prevent issues in earlier Android version.
-//         */
-//        private void disableConnectionReuseIfNecessary() {
-//            // see HttpURLConnection API doc
-//            if (Integer.parseInt(Build.VERSION.SDK)
-//                    < Build.VERSION_CODES.LOLLIPOP) {
-//                System.setProperty("http.keepAlive", "false");
-//            }
-//        }
-//
-//        private String getResponseText(InputStream inStream) {
-//            // very nice trick from
-//            // http://weblogs.java.net/blog/pat/archive/2004/10/stupid_scanner_1.html
-//            return new Scanner(inStream).useDelimiter("\\A").next();
-//        }
-//
-//        public List<String> findAllItems() {
-//            JSONObject serviceResult = requestWebService(queryString);
-//
-//            List<String> foundItems = new ArrayList<String>(MAX_RECIPES);
-//
-//            try {
-//                JSONArray items = serviceResult.getJSONArray("items");
-//
-//                for (int i = 0; i < items.length(); i++) {
-//                    JSONObject obj = items.getJSONObject(i);
-//                    foundItems.add(obj.getString("name"));
-//                }
-//
-//            } catch (JSONException e) {
-//                // handle exception
-//            }
-//
-//            return foundItems;
-//        }
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -209,14 +95,18 @@ public class RecipeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.home_menu: {
-                finish();
+                Intent a = new Intent(this, MainActivity.class);
+                startActivity(a);
                 return true;
             }
             case R.id.search_menu: {
-//                searchFunction();
+                Intent recipe_done = getIntent();
+                setResult(300, recipe_done);
+                finish();
                 return true;
             }
             case R.id.recipe_menu:{
+                //Nothing.
                 return true;
             }
             //Else is selected.
@@ -225,59 +115,117 @@ public class RecipeActivity extends AppCompatActivity {
         }
     }
 
+    private ArrayList<HashMap<String, String>> ParseJSON(String json) {
+        if (json != null) {
+            try {
+                // Hashmap for ListView
+                ArrayList<HashMap<String, String>> trecipeList = new ArrayList<HashMap<String, String>>();
 
+                JSONObject jsonObj = new JSONObject(json);
 
+                // Make sure there are recipes
+                if (jsonObj.getInt(TAG_COUNT)>0) {
+                    // Getting JSON Array node
+                    JSONArray recipes = jsonObj.getJSONArray(TAG_RECIPES);
 
+                    // looping through All Recipes
+                    for (int i = 0; i < recipes.length(); i++) {
+                        JSONObject c = recipes.getJSONObject(i);
 
+                        String title = c.getString(TAG_TITLE);
+                        String url = c.getString(TAG_URL);
 
-    // Code to be looked at later
+                        // tmp hashmap for single student
+                        HashMap<String, String> recipe = new HashMap<String, String>();
 
-//    public void searchFunction(){
-//        Intent searchForIngredient = new Intent(this, SearchableActivity.class);
-//        startActivityForResult(searchForIngredient, 100);
-//    }
+                        // adding every child node to HashMap key => value
+                        recipe.put(TAG_TITLE, title);
+                        recipe.put(TAG_URL, url);
 
-//    public static JSONObject getJSONfromURL(String url){
-//        //initialize
-//        InputStream is = null;
-//        String result = "";
-//        JSONObject jArray = null;
-//
-//        //http post
-//        try{
-//            HttpClient httpclient = new DefaultHttpClient();
-//            HttpPost httppost = new HttpPost(url);
-//            HttpResponse response = httpclient.execute(httppost);
-//            HttpEntity entity = response.getEntity();
-//            is = entity.getContent();
-//        }
-//        catch(Exception e){
-//            Log.e("log_tag", "Error in http connection " + e.toString());
-//        }
-//
-//        //convert response to string
-//        try {
-//            BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-//            StringBuilder sb = new StringBuilder();
-//            String line = null;
-//            while ((line = reader.readLine()) != null) {
-//                sb.append(line + "\n");
-//            }
-//            is.close();
-//            result=sb.toString();
-//        }
-//        catch(Exception e){
-//            Log.e("log_tag", "Error converting result "+e.toString());
-//        }
-//
-//        // try parse the string to a JSON object
-//        try{
-//            jArray = new JSONObject(result);
-//        }
-//        catch(JSONException e) {
-//            Log.e("log_tag", "Error parsing data "+e.toString());
-//        }
-//
-//        return jArray;
-//    }
+                        // adding student to students list
+                        trecipeList.add(recipe);
+                    }
+                }
+                return trecipeList;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else {
+            Log.e("ServiceHandler", "No data received from HTTP request");
+            return null;
+        }
+    }
+
+    private class GetRecipes extends AsyncTask<Void, Void, Void> {
+
+        ProgressDialog proDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress loading dialog
+            proDialog = new ProgressDialog(RecipeActivity.this);
+            proDialog.setMessage("Please wait...");
+            proDialog.setCancelable(false);
+            proDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            // Creating service handler class instance
+            WebRequest webreq = new WebRequest();
+
+            // Making a request to url and getting response
+            String jsonStr = webreq.makeWebServiceCall(queryString, WebRequest.GETRequest);
+
+            Log.d("Response: ", "> " + jsonStr);
+            recipeList = ParseJSON(jsonStr);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void requestresult) {
+            super.onPostExecute(requestresult);
+            // Dismiss the progress dialog
+            if (proDialog.isShowing())
+                proDialog.dismiss();
+            /**
+             * Updating received data from JSON into ListView
+             * */
+
+            ListAdapter adapter = new SimpleAdapter(
+                    RecipeActivity.this, recipeList,
+                    R.layout.list_item, new String[]{TAG_TITLE}, new int[]{R.id.ingredient_name});
+
+            listOfRecipes.setAdapter(adapter);
+        }
+
+    }
+    /** Function to open a context menu*/
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.recipe_context, menu);
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int position = info.position;
+        switch (item.getItemId()) {
+            //If delete is selected.
+            case R.id.context_url: {
+                HashMap<String, String> tMap = recipeList.get(position);
+
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(tMap.get(TAG_URL))));
+                return true;
+            }
+            //Else is selected.
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
 }
