@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -196,7 +197,7 @@ public class SearchableActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), R.string.item_exists, Toast.LENGTH_SHORT).show();
         }
         // Else, the item does not exist and should be added to the ingredients list.
-        else{
+        else{/*
             if(inputSearch.getText().toString().matches("")){//Encountered glitch. TEMP FIX!!!
                 ingredients.add(item);
             }
@@ -204,7 +205,9 @@ public class SearchableActivity extends AppCompatActivity {
                 ingredients.add(item);
                 searchAdapter.clear();
                 searchAdapter.addAll(ingredients);
-            }
+            }*/
+            ingredients.add(item);
+            searchAdapter.insert(item,0);
             searchAdapter.notifyDataSetChanged();
             inputSearch.setText("");
         }
