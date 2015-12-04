@@ -203,14 +203,7 @@ public class SearchableActivity extends AppCompatActivity {
         }
         // Else, the item does not exist and should be added to the ingredients list.
         else{
-            if(inputSearch.getText().toString().matches("")){//Encountered glitch. TEMP FIX!!!
-                ingredients.add(item);
-            }
-            else {
-                ingredients.add(item);
-                searchAdapter.clear();
-                searchAdapter.addAll(ingredients);
-            }
+            ingredients.add(item);
             inputSearch.setText("");
         }
     }

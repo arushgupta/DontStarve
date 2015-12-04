@@ -31,9 +31,13 @@ public class RecipeActivity extends AppCompatActivity {
     /** Hashmap for ListView */
     private static ArrayList<HashMap<String, String>> recipeList;
     /** JSON Node names */
+    // Counts number of recipes
     private static final String TAG_COUNT = "count";
+    // JSON array of JSON recipe objects
     private static final String TAG_RECIPES = "recipes";
+    // Name of recipe
     private static final String TAG_TITLE = "title";
+    // URL of recipe
     private static final String TAG_URL = "source_url";
     /** Instance variables */
     static int CONNECTION_TIMEOUT = 10000;
@@ -98,13 +102,19 @@ public class RecipeActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    /** */
+    /* Function to take in the original JSON object from the HTTP request
+     * and parse the recipes into an array of hashmaps. Each hashmap
+     * will contain the recipe name and the url for the recipe.
+     * The original JSON object contains two field -
+     * 1) Count - the number of recipes
+     * 2) Recipes - an array of recipe JSON objects */
     private ArrayList<HashMap<String, String>> ParseJSON(String json) {
         if (json != null) {
             try {
                 // Hashmap for ListView
                 ArrayList<HashMap<String, String>> trecipeList = new ArrayList<HashMap<String, String>>();
 
+                // Original json object created from string returned by HTTP request
                 JSONObject jsonObj = new JSONObject(json);
 
                 // Make sure there are recipes
@@ -114,15 +124,18 @@ public class RecipeActivity extends AppCompatActivity {
 
                     // looping through All Recipes
                     for (int i = 0; i < recipes.length(); i++) {
+                        // Get the I'th recipe from JSONArray
                         JSONObject c = recipes.getJSONObject(i);
 
+                        // Get field to store in hashmap
                         String title = c.getString(TAG_TITLE);
                         String url = c.getString(TAG_URL);
 
-                        // tmp hashmap for single student
+                        // tmp hashmap for single recipe
                         HashMap<String, String> recipe = new HashMap<String, String>();
 
                         // adding every child node to HashMap key => value
+                        // Stored values are name of recipe (title) and url of recipe (url)
                         recipe.put(TAG_TITLE, title);
                         recipe.put(TAG_URL, url);
 
@@ -136,15 +149,18 @@ public class RecipeActivity extends AppCompatActivity {
                 return null;
             }
         } else {
+            // In case function is called on a non-JSON object
             Log.e("ServiceHandler", "No data received from HTTP request");
             return null;
         }
     }
-    /** */
+    /* Function to make the HTTP request at given url,
+     * Fill the ArrayList with the recipes/urls, and
+     * Get the ArrayAdapter to view the ArrayList*/
     private class GetRecipes extends AsyncTask<Void, Void, Void> {
-        /** */
+        /* "Please wait" with spinning progress wheel */
         ProgressDialog proDialog;
-        /** */
+        /* Function to start a progress dialog to run while the HTTP request works in the background */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -154,7 +170,7 @@ public class RecipeActivity extends AppCompatActivity {
             proDialog.setCancelable(false);
             proDialog.show();
         }
-        /** */
+        /* Function to make HTTP request at url provided and parses it into an ArrayList */
         @Override
         protected Void doInBackground(Void... arg0) {
             // Creating service handler class instance
@@ -168,7 +184,7 @@ public class RecipeActivity extends AppCompatActivity {
 
             return null;
         }
-        /** */
+        /* Function to end the progress dialog and sets the adapter to list the recipe array */
         @Override
         protected void onPostExecute(Void requestresult) {
             super.onPostExecute(requestresult);
@@ -199,9 +215,11 @@ public class RecipeActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int position = info.position;
+        // When a recipe in the list is long clicked
         switch (item.getItemId()) {
-            //If delete is selected.
+            //If view recipe is selected.
             case R.id.context_url: {
+                // Open up browser to view recipe instructions
                 HashMap<String, String> tMap = recipeList.get(position);
 
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(tMap.get(TAG_URL))));

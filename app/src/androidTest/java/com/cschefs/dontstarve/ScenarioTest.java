@@ -1,3 +1,28 @@
+/* Scenario Tests
+ * Scenario 1: Adding a new ingredient to item list and basket
+ * Given the home page is open
+ * When the user clicks the search button
+ * And the user clicks New Item
+ * And the user types "chicken"
+ * And the user clicks Add
+ * And the user type chicken into the search bar
+ * And the user clicks Add
+ * Then the app will go back to the home screen and chicken will be displayed
+ *
+ * Scenario 2: Clear button
+ * Given that the home page is open
+ * And chicken is added to the basket
+ * When the user clicks the Clear All button
+ * And the user clicks Yes
+ * Then the basket will be empty
+ *
+ * Scenario 3: Searching for recipes with empty basket
+ * Given that the home page is open
+ * And the basket is empty
+ * When the user clicks Find Recipes
+ * Then the app will go the the recipe screen and the top 30 recipes will be dislayed
+ */
+
 package com.cschefs.dontstarve;
 
 import android.os.SystemClock;
@@ -25,8 +50,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 
@@ -47,38 +74,57 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
             MainActivity.class);
 
 
+    /* Scneario Test 1: Add a new ingredient to item list and basket */
     @Test
     public void testEnterInNewIngredient() throws Exception{
-        // Click Search Button
+        // Given the home page is open
+        // When the user clicks the search button
         onView(withId(R.id.search_menu)).perform(click());
 
-        // This view is in a different Activity, no need to tell Espresso.
-        // Click to add new ingredient
+        // And the user clicks New Item
         onView(withId(R.id.new_button_search)).perform(click());
 
-        // Type in new item to add - chicken
+        // And the user types "chicken"
+        // And the user clicks Add
         onView(withId(R.id.new_item_edit)).perform(typeText("chicken"), closeSoftKeyboard());
         onView(withText("Add")).perform(click());
 
-        // Add chicken to ingredients list
+        // And the user type chicken into the search bar
+        // And the user clicks Add
         onView(withId(R.id.input_search)).perform(typeText("chicken"),closeSoftKeyboard());
         onView(withId(R.id.add_button_search)).perform(click());
 
-        // Check that chicken is there
+        // Then the app will go back to the home screen and chicken will be displayed
         onView(withText("chicken")).check(matches(isDisplayed()));
-        /*
-        // Search for ingredients
-        onView(withId(R.id.find_button)).perform(click());
+    }
+    // Scenario Test 2: Clear Button
+    @Test
+    public void testClearButton() throws Exception{
+        // Given that the home page is open
+        // And chicken is added to the basket
 
-        // Go back to main menu
-        onView(withId(R.id.home_menu)).perform(click());
-        */
-
-
-        // Clear ingredient
+        // When the user clicks the Clear All button
         onView(withId(R.id.clear_button)).perform(click());
+
+        // And the user clicks Yes
         onView(withText("Yes")).perform(click());
 
+        // Then the basket will be empty
+        onView(withId(R.id.list_ingredients)).check(matches(not(isDisplayed())));
+    }
+    // Scenario 3: Searching for recipes with empty basket
+    @Test
+    public void testFindRecipeEmptyBasket() throws Exception{
+        // Given that the home page is open
+        // And the basket is empty
 
+        // When the user clicks Find Recipes
+        onView(withId(R.id.find_button)).perform(click());
+
+        // Then the app will go the the recipe screen and the top 30 recipes will be dislayed
+        onView(withId(R.id.list_recipes)).check(matches(isDisplayed()));
+
+        // Not part of this scenario: Go back to home screen for other tests
+        onView(withId(R.id.home_menu)).perform(click());
     }
 }
