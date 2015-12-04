@@ -82,6 +82,9 @@ public class SearchableActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable arg0) {
+                if(inputSearch.getText().toString().equals("")){
+                    searchAdapter.notifyDataSetChanged();
+                }
             }
         });
     }
@@ -199,7 +202,7 @@ public class SearchableActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), R.string.item_exists, Toast.LENGTH_SHORT).show();
         }
         // Else, the item does not exist and should be added to the ingredients list.
-        else{/*
+        else{
             if(inputSearch.getText().toString().matches("")){//Encountered glitch. TEMP FIX!!!
                 ingredients.add(item);
             }
@@ -207,10 +210,7 @@ public class SearchableActivity extends AppCompatActivity {
                 ingredients.add(item);
                 searchAdapter.clear();
                 searchAdapter.addAll(ingredients);
-            }*/
-            ingredients.add(item);
-            searchAdapter.insert(item,0);
-            searchAdapter.notifyDataSetChanged();
+            }
             inputSearch.setText("");
         }
     }
