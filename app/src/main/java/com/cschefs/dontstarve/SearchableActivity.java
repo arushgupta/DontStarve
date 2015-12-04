@@ -33,7 +33,8 @@ public class SearchableActivity extends AppCompatActivity {
     /** ArrayList to organize objects */
     private static ArrayList<String> ingredients = new ArrayList<String>();
     /** Other variables needed */
-    private ArrayAdapter<String> searchAdapter;
+    private static ArrayAdapter<String> searchAdapter;
+    /** Function to set up the Activity when called. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Automatically call to set up the activity page.
@@ -81,15 +82,20 @@ public class SearchableActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable arg0) {
+                if(inputSearch.getText().toString().equals("")){
+                    searchAdapter.notifyDataSetChanged();
+                }
             }
         });
     }
+    /** Function to create the navigation menu. */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
+    /** Function to handle navigation menu clicks. */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -115,7 +121,7 @@ public class SearchableActivity extends AppCompatActivity {
     }
     /** Adds ingredient to the main page ingredients list. */
     public void addIngredient(View view){ addFunction(); }
-    /** */
+    /** Processes the added ingredient. Is only called when there is a click on the UI. */
     private void addFunction(){
         Intent search_done = getIntent();
         ingredient_name = inputSearch.getText().toString();
@@ -134,7 +140,7 @@ public class SearchableActivity extends AppCompatActivity {
             finish();
         }
     }
-    /** */
+    /** When clicked, calls the newItemDialog to prompt the user for an added item. */
     public void newItem(View view){ newItemDialog(); }
     /** Creates an AlertDialog that prompts the user for input in an EditText*/
     private void newItemDialog(){
@@ -197,16 +203,10 @@ public class SearchableActivity extends AppCompatActivity {
         }
         // Else, the item does not exist and should be added to the ingredients list.
         else{
-            if(inputSearch.getText().toString().matches("")){//Encountered glitch. TEMP FIX!!!
-                ingredients.add(item);
-            }
-            else {
-                ingredients.add(item);
-                searchAdapter.clear();
-                searchAdapter.addAll(ingredients);
-            }
-            searchAdapter.notifyDataSetChanged();
+            ingredients.add(item);
             inputSearch.setText("");
+            searchAdapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.ingredient_name, ingredients);
+            listSearch.setAdapter(searchAdapter);
         }
     }
 
