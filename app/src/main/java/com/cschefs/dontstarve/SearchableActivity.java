@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -35,6 +34,7 @@ public class SearchableActivity extends AppCompatActivity {
     private static ArrayList<String> ingredients = new ArrayList<String>();
     /** Other variables needed */
     private ArrayAdapter<String> searchAdapter;
+    /** Function to set up the Activity when called. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Automatically call to set up the activity page.
@@ -85,12 +85,14 @@ public class SearchableActivity extends AppCompatActivity {
             }
         });
     }
+    /** Function to create the navigation menu. */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
+    /** Function to handle navigation menu clicks. */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -116,7 +118,7 @@ public class SearchableActivity extends AppCompatActivity {
     }
     /** Adds ingredient to the main page ingredients list. */
     public void addIngredient(View view){ addFunction(); }
-    /** */
+    /** Processes the added ingredient. Is only called when there is a click on the UI. */
     private void addFunction(){
         Intent search_done = getIntent();
         ingredient_name = inputSearch.getText().toString();
@@ -135,7 +137,7 @@ public class SearchableActivity extends AppCompatActivity {
             finish();
         }
     }
-    /** */
+    /** When clicked, calls the newItemDialog to prompt the user for an added item. */
     public void newItem(View view){ newItemDialog(); }
     /** Creates an AlertDialog that prompts the user for input in an EditText*/
     private void newItemDialog(){

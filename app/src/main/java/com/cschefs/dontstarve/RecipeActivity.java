@@ -1,14 +1,10 @@
 package com.cschefs.dontstarve;
 
 import android.app.ProgressDialog;
-import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,28 +14,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
 
 public class RecipeActivity extends AppCompatActivity {
     /** Displays list of ingredients */
@@ -58,6 +40,7 @@ public class RecipeActivity extends AppCompatActivity {
     static int DATARETRIEVAL_TIMEOUT = 10000;
     static int MAX_RECIPES = 30;
 
+    /** Function to set up the Activity when called. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -84,13 +67,14 @@ public class RecipeActivity extends AppCompatActivity {
         // Call async task which returns JSON object
         new GetRecipes().execute();
     }
+    /** Function to create the navigation menu. */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
+    /** Function to handle navigation menu clicks. */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -114,7 +98,7 @@ public class RecipeActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
+    /** */
     private ArrayList<HashMap<String, String>> ParseJSON(String json) {
         if (json != null) {
             try {
@@ -156,11 +140,11 @@ public class RecipeActivity extends AppCompatActivity {
             return null;
         }
     }
-
+    /** */
     private class GetRecipes extends AsyncTask<Void, Void, Void> {
-
+        /** */
         ProgressDialog proDialog;
-
+        /** */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -170,7 +154,7 @@ public class RecipeActivity extends AppCompatActivity {
             proDialog.setCancelable(false);
             proDialog.show();
         }
-
+        /** */
         @Override
         protected Void doInBackground(Void... arg0) {
             // Creating service handler class instance
@@ -184,7 +168,7 @@ public class RecipeActivity extends AppCompatActivity {
 
             return null;
         }
-
+        /** */
         @Override
         protected void onPostExecute(Void requestresult) {
             super.onPostExecute(requestresult);
@@ -210,6 +194,7 @@ public class RecipeActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.recipe_context, menu);
     }
+    /** Function to handle context menu actions */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();

@@ -17,18 +17,18 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    /** ListView listIngredients links to list_ingredients. Displays list of ingredients chosen */
+    /** ListView listIngredients links to list_ingredients. Displays list of ingredients chosen. */
     private ListView listIngredients;
-    /** ArrayList arrayIngredients allows for storage of ingredients chosen */
+    /** ArrayList arrayIngredients allows for storage of ingredients chosen. Basically the underlying structure.*/
     private static ArrayList<String> arrayIngredients;
     /** Other variables needed */
     private ArrayAdapter<String> adapter;
+    /** Function to set up the Activity when called. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Automatically call to set up the activity page.
@@ -54,12 +54,14 @@ public class MainActivity extends AppCompatActivity {
         //Register the listView for context menu functionality.
         registerForContextMenu(listIngredients);
     }
+    /** Function to create the navigation menu. */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
+    /** Function to handle navigation menu clicks. */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    /** */
+    /** Function that calls searchFunction. */
     public void searchIngredients(){
         searchFunction(); }
     /** Function is called when the user clicks the Search Ingredients Button
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         Intent searchForIngredient = new Intent(this, SearchableActivity.class);
         startActivityForResult(searchForIngredient, 100);
     }
-    /** Function to read the result from newly created activities */
+    /** Function to read the result from newly created activities "startActivityForResult"*/
     @Override
     protected void onActivityResult(int requestCode,
                                     int resultCode, Intent data) {
@@ -114,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
             searchIngredients();
         }
     }
-    /** */
+    /** Function that creates a recipe request. Called from the UI. */
     public void findRecipe(View view){ recipeRequest(); }
-    /** */
+    /** Generates the API Request and sends it to recipeFunction to parse. */
     private void recipeRequest(){
         String request = "http://food2fork.com/api/search?key=1a51019d6390e0285a6bdec41fdf13a3";
         //If Blank (no ingredients) then return top recipes
@@ -153,13 +155,13 @@ public class MainActivity extends AppCompatActivity {
         //Go into RecipeActivity and pass request in
         recipeFunction(request);
     }
-    /** */
+    /** Uses the String request to send to activity RecipeActivity. */
     private void recipeFunction(String request){
         Intent searchForRecipe = new Intent(this,RecipeActivity.class);
         searchForRecipe.putExtra("request",request);
         startActivityForResult(searchForRecipe, 300);
     }
-    /** */
+    /** Calls the clearAll function only if the list is not empty. Prompts clearAllDialog if so. */
     public void clearAll(View view) {
         if (arrayIngredients.isEmpty()){
             Toast.makeText(getApplicationContext(), R.string.list_is_empty, Toast.LENGTH_SHORT).show();
@@ -168,7 +170,8 @@ public class MainActivity extends AppCompatActivity {
             clearAllDialog();
         }
     }
-    /** */
+    /** AlertDialog that contains the action for clearing items in the list. No will cancel the prompt.
+     *  Yes will clear the entire list and make it empty again. */
     private void clearAllDialog(){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle(R.string.clear_all_text);
@@ -189,13 +192,14 @@ public class MainActivity extends AppCompatActivity {
         dialogConfirm.show();
 
     }
-    /** Function to open a context menu*/
+    /** Function to open a context menu */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_context, menu);
     }
+    /** Function to handle context menu actions */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
