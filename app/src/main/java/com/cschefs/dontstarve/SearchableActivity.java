@@ -33,7 +33,7 @@ public class SearchableActivity extends AppCompatActivity {
     /** ArrayList to organize objects */
     private static ArrayList<String> ingredients = new ArrayList<String>();
     /** Other variables needed */
-    private ArrayAdapter<String> searchAdapter;
+    private static ArrayAdapter<String> searchAdapter;
     /** Function to set up the Activity when called. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,6 +205,8 @@ public class SearchableActivity extends AppCompatActivity {
         else{
             ingredients.add(item);
             inputSearch.setText("");
+            searchAdapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.ingredient_name, ingredients);
+            listSearch.setAdapter(searchAdapter);
         }
     }
 
