@@ -141,7 +141,7 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
     public void testFindRecipeMultipleItems() throws Exception{
         // Given that the home page is open
         // And the basket is empty
-
+        onView(withId(R.id.home_menu)).perform(click());
         // When the user clicks Find Recipes
         onView(withId(R.id.find_button)).perform(click());
 
@@ -149,10 +149,10 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
         onView(withId(R.id.list_recipes)).check(matches(isDisplayed()));
 
         // Not part of this scenario: Go back to home screen for other tests
-        onView(withId(R.id.home_menu)).perform(click());
+//        onView(withId(R.id.home_menu)).perform(click());
     }
 
-    // Scenario Test 2: Clear Button
+    // Scenario Test 4: Clear Button
     @Test
     public void testClearButton() throws Exception{
         // Given that the home page is open
@@ -167,7 +167,7 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
         // Then the basket will be empty
         onView(withId(R.id.list_ingredients)).check(matches(not(isDisplayed())));
     }
-    // Scenario 3: Searching for recipes with empty basket
+    // Scenario Test 5: Searching for recipes with empty basket
     @Test
     public void testFindRecipeEmptyBasket() throws Exception{
         // Given that the home page is open
