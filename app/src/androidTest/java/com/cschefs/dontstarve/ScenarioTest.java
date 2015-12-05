@@ -106,13 +106,10 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
         //When the user clicks the search button
         onView(withId(R.id.search_menu)).perform(click());
 
-        //And the user selects an ingredient from the provided list by typing into the search bar
+        //And the user selects an ingredient from the provided list by tapping on an ingredient
         //And the user clicks Add
-        onView(withId(R.id.input_search)).perform(typeText("salmon"),closeSoftKeyboard());
+        onData(anything()).inAdapterView(withId(R.id.list_ingredients_search)).atPosition(0).perform(click());
         onView(withId(R.id.add_button_search)).perform(click());
-
-        //And the user will go back to the home screen and salmon will be displayed
-        onView(withText("salmon")).check(matches(isDisplayed()));
 
         //And when the user clicks on the search button again it redirects the user back to search
         onView(withId(R.id.search_menu)).perform(click());
@@ -130,7 +127,7 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
         onView(withId(R.id.input_search)).perform(typeText("bread"),closeSoftKeyboard());
         onView(withId(R.id.add_button_search)).perform(click());
 
-        // Then the app will go back to the home screen and chicken will be displayed
+        // Then the app will go back to the home screen and all of the added items will be displayed
         onView(withText("chicken")).check(matches(isDisplayed()));
         onView(withText("salmon")).check(matches(isDisplayed()));
         onView(withText("bread")).check(matches(isDisplayed()));
