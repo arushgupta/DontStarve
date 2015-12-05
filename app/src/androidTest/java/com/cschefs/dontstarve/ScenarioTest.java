@@ -9,18 +9,35 @@
  * And the user clicks Add
  * Then the app will go back to the home screen and chicken will be displayed
  *
- * Scenario 2: Clear button
+ * Scenario 2: Add multiple ingredients to the list
+ * Given the home page is open
+ * When the user clicks the search button
+ * And the user selects an ingredient from the provided list by tapping on an ingredient
+ * And the user clicks Add
+ * And when the user clicks on the search button again it redirects the user back to search
+ * And the user clicks New Item
+ * And the user types "bread"
+ * And the user clicks Add
+ * Then the app will go back to the home screen and all of the added items will be displayed
+ *
+ * Scenario 3: Searching for recipes with multiple items
+ * Given that the home page is open
+ * And the basket is empty
+ * When the user clicks Find Recipes
+ * Then the app will go the the recipe screen and the top 30 recipes will be displayed
+ *
+ * Scenario 4: Clear button
  * Given that the home page is open
  * And chicken is added to the basket
  * When the user clicks the Clear All button
  * And the user clicks Yes
  * Then the basket will be empty
  *
- * Scenario 3: Searching for recipes with empty basket
+ * Scenario 5: Searching for recipes with empty basket
  * Given that the home page is open
  * And the basket is empty
  * When the user clicks Find Recipes
- * Then the app will go the the recipe screen and the top 30 recipes will be dislayed
+ * Then the app will go the the recipe screen and the top 30 recipes will be displayed
  */
 
 package com.cschefs.dontstarve;
@@ -74,7 +91,7 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
             MainActivity.class);
 
 
-    /* Scenario Test 1: Add a new ingredient to item list and basket */
+    // Scenario Test 1: Add a new ingredient to item list and basket
     @Test
     public void testEnterInNewIngredient() throws Exception{
         // Given the home page is open
@@ -99,19 +116,19 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
 
     }
 
-    // Scenario Test 2: Adds multiple ingredients to the list
+    // Scenario Test 2: Add multiple ingredients to the list
     @Test
     public void testSelectIngredient() throws Exception {
-        //Given the home page is open
-        //When the user clicks the search button
+        // Given the home page is open
+        // When the user clicks the search button
         onView(withId(R.id.search_menu)).perform(click());
 
-        //And the user selects an ingredient from the provided list by tapping on an ingredient
-        //And the user clicks Add
+        // And the user selects an ingredient from the provided list by tapping on an ingredient
+        // And the user clicks Add
         onData(anything()).inAdapterView(withId(R.id.list_ingredients_search)).atPosition(0).perform(click());
         onView(withId(R.id.add_button_search)).perform(click());
 
-        //And when the user clicks on the search button again it redirects the user back to search
+        // And when the user clicks on the search button again it redirects the user back to search
         onView(withId(R.id.search_menu)).perform(click());
 
         // And the user clicks New Item
@@ -142,11 +159,8 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
         // When the user clicks Find Recipes
         onView(withId(R.id.find_button)).perform(click());
 
-        // Then the app will go the the recipe screen and the top 30 recipes will be dislayed
+        // Then the app will go the the recipe screen and the top 30 recipes will be displayed
         onView(withId(R.id.list_recipes)).check(matches(isDisplayed()));
-
-        // Not part of this scenario: Go back to home screen for other tests
-//        onView(withId(R.id.home_menu)).perform(click());
     }
 
     // Scenario Test 4: Clear Button
@@ -173,7 +187,7 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
         // When the user clicks Find Recipes
         onView(withId(R.id.find_button)).perform(click());
 
-        // Then the app will go the the recipe screen and the top 30 recipes will be dislayed
+        // Then the app will go the the recipe screen and the top 30 recipes will be displayed
         onView(withId(R.id.list_recipes)).check(matches(isDisplayed()));
 
         // Not part of this scenario: Go back to home screen for other tests
