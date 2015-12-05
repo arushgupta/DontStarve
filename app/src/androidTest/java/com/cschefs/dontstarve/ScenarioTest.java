@@ -16,7 +16,9 @@
  * And the user clicks Add
  * And when the user clicks on the search button again it redirects the user back to search
  * And the user clicks New Item
- * And the user types "bread"
+ * And the user types "lemon"
+ * And the user clicks Add
+ * And the user type chicken into the search bar
  * And the user clicks Add
  * Then the app will go back to the home screen and all of the added items will be displayed
  *
@@ -38,6 +40,9 @@
  * And the basket is empty
  * When the user clicks Find Recipes
  * Then the app will go the the recipe screen and the top 30 recipes will be displayed
+ * When the user does a long tap
+ * And clicks View Recipe
+ * Then the user is redirected to the recipe's web page
  */
 
 package com.cschefs.dontstarve;
@@ -162,19 +167,8 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
         onView(withId(R.id.list_recipes)).check(matches(isDisplayed()));
     }
 
-    //Scenario Test 4: Clear using long tap
-    @Test
-    public void testClearTap() throws Exception{
-        // Given that the home page is open
-        // And chicken is added to the basket
-        // When the user clicks the Clear All button
-        onData(anything()).inAdapterView(withId(R.id.list_ingredients)).atPosition(0).perform(longClick());
 
-        // And the user clicks Yes
-        onView(withText("Delete")).perform(click());
-    }
-
-    //Scenario Test 5: Clear All Button
+    //Scenario Test 4: Clear All Button
     @Test
     public void testClearButton() throws Exception{
         // Given that the home page is open
@@ -190,15 +184,15 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
         onView(withId(R.id.list_ingredients)).check(matches(not(isDisplayed())));
     }
 
-    //Scenario Test 6: Searching for recipes with empty basket and going to a recipe page
+    //Scenario Test 5: Searching for recipes with empty basket and going to a recipe page
     @Test
     public void testFindRecipeEmptyBasket() throws Exception{
-        //Given that the home page is open
-        //And the basket is empty
-        //And the user clicks Find Recipes
+        // Given that the home page is open
+        // And the basket is empty
+        // And the user clicks Find Recipes
         onView(withId(R.id.find_button)).perform(click());
 
-        //Checks presence of a list of recipes
+        // Then a list of recipes is diesplayed
         onView(withId(R.id.list_recipes)).check(matches(isDisplayed()));
 
         //When the user does a long tap
@@ -207,6 +201,6 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
         //And clicks View Recipe
         onView(withText("View Recipe")).perform(click());
 
-        //Then the user is redirected to the recipe's web page
+        // Then the user is redirected to the recipe's web page
     }
 }
