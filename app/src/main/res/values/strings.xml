@@ -30,6 +30,7 @@
     <!-- Other -->
     <string name="back_button_text">Back</string>
     <string-array name="string_ingredients">
+        <item>onions</item>
         <item>salmon</item>
         <item>pea beans</item>
         <item>honey</item>
@@ -50,7 +51,6 @@
         <item>tomato puree</item>
         <item>pesto</item>
         <item>rhubarb</item>
-        <item>onions</item>
         <item>curry paste</item>
         <item>lemon juice</item>
         <item>cucumbers</item>
