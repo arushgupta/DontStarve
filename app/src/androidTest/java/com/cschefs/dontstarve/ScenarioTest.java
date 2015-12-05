@@ -74,7 +74,7 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
             MainActivity.class);
 
 
-    /* Scneario Test 1: Add a new ingredient to item list and basket */
+    /* Scenario Test 1: Add a new ingredient to item list and basket */
     @Test
     public void testEnterInNewIngredient() throws Exception{
         // Given the home page is open
@@ -96,7 +96,62 @@ public class ScenarioTest extends ActivityInstrumentationTestCase2<MainActivity>
 
         // Then the app will go back to the home screen and chicken will be displayed
         onView(withText("chicken")).check(matches(isDisplayed()));
+
     }
+
+    // Scenario Test 2: Adds multiple ingredients to the list
+    @Test
+    public void testSelectIngredient() throws Exception {
+        //Given the home page is open
+        //When the user clicks the search button
+        onView(withId(R.id.search_menu)).perform(click());
+
+        //And the user selects an ingredient from the provided list by typing into the search bar
+        //And the user clicks Add
+        onView(withId(R.id.input_search)).perform(typeText("salmon"),closeSoftKeyboard());
+        onView(withId(R.id.add_button_search)).perform(click());
+
+        //And the user will go back to the home screen and salmon will be displayed
+        onView(withText("salmon")).check(matches(isDisplayed()));
+
+        //And when the user clicks on the search button again it redirects the user back to search
+        onView(withId(R.id.search_menu)).perform(click());
+
+        // And the user clicks New Item
+        onView(withId(R.id.new_button_search)).perform(click());
+
+        // And the user types "bread"
+        // And the user clicks Add
+        onView(withId(R.id.new_item_edit)).perform(typeText("bread"), closeSoftKeyboard());
+        onView(withText("Add")).perform(click());
+
+        // And the user type chicken into the search bar
+        // And the user clicks Add
+        onView(withId(R.id.input_search)).perform(typeText("bread"),closeSoftKeyboard());
+        onView(withId(R.id.add_button_search)).perform(click());
+
+        // Then the app will go back to the home screen and chicken will be displayed
+        onView(withText("chicken")).check(matches(isDisplayed()));
+        onView(withText("salmon")).check(matches(isDisplayed()));
+        onView(withText("bread")).check(matches(isDisplayed()));
+    }
+
+    // Scenario Test 3: Searching for recipes with multiple items
+    @Test
+    public void testFindRecipeMultipleItems() throws Exception{
+        // Given that the home page is open
+        // And the basket is empty
+
+        // When the user clicks Find Recipes
+        onView(withId(R.id.find_button)).perform(click());
+
+        // Then the app will go the the recipe screen and the top 30 recipes will be dislayed
+        onView(withId(R.id.list_recipes)).check(matches(isDisplayed()));
+
+        // Not part of this scenario: Go back to home screen for other tests
+        onView(withId(R.id.home_menu)).perform(click());
+    }
+
     // Scenario Test 2: Clear Button
     @Test
     public void testClearButton() throws Exception{
